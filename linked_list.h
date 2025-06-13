@@ -44,5 +44,5 @@ public:
 	void reverseSort();
 
 	// 反转顺序表
-    void reverse();
+    	void reverse();
 };
