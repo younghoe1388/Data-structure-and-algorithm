@@ -1,9 +1,13 @@
 ﻿# include <iostream>
 # include "stack.h"
 using namespace std;
+
 template <class T>
 Stack<T>::Stack() {
 	this->top = -1;
+    for (int i = 0; i < MAX_SIZE; i++) {
+        this->data[i] = 0;
+    }
 }
 
 template <class T>
@@ -72,21 +76,92 @@ void Stack<T>::print() {
 	cout << endl;
 }
 
+template <class T>
+contentType Stack<T>::getToken(int& index, char& symbol) {
+	symbol = expression[index];
+	index++;
+
+	switch (symbol) {
+	case '(':
+		return LEFT_PARE;
+		break;
+	case ')':
+		return RIGHT_PARE;
+		break;
+	case '+':
+		return ADD;
+		break;
+	case '-':
+		return SUB;
+		break;
+	case '*':
+		return MUL;
+		break;
+	case '/':
+		return DIV;
+		break;
+	case '%':
+		return MOD;
+		break;
+	case '\0':
+		return EOS;
+		break;
+	default:
+		return NUM;
+	}
+}
+
+template <class T>
+int Stack<T>::calculate() {
+	int op1, op2;
+	int index = 0;
+	char symbol;
+	contentType token = this->getToken(index, symbol);
+	int result;
+
+	while (token != EOS) {
+		if (token == NUM) {
+			this->push(symbol - '0');
+		}
+		else {
+			op2 = this->getTop();
+			this->pop();
+			op1 = this->getTop();
+			this->pop();
+
+			switch (token) {
+			case ADD:
+				this->push(op1 + op2);
+				break;
+			case SUB:
+				this->push(op1 - op2);
+				break;
+			case MUL:
+				this->push(op1 * op2);
+				break;
+			case DIV:
+				this->push(op1 / op2);
+				break;
+			case MOD:
+				this->push(op1 % op2);
+				break;
+			default:
+				break;
+			}
+		}
+
+		token = getToken(index, symbol);
+	}
+	result = this->getTop();
+	this->pop();
+	cout << "The result is: " << result << endl;
+	return result;
+}
+
 int main() {
 	system("chcp 65001");
     Stack<int> stack;
-	stack.push(1);
-	stack.push(2);
-	stack.push(3);
-	stack.push(4);
-	stack.push(5);
-	stack.push(6);
-	stack.print();
-
-	stack.getTop();
-    stack.pop();
-	stack.getTop();
-    stack.print();
+	stack.calculate();
 
 	system("pause");
 	return 0;

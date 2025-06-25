@@ -2,6 +2,14 @@
 #include <iostream>
 #define MAX_SIZE 100
 using namespace std;
+
+enum contentType {
+	LEFT_PARE, RIGHT_PARE,// 左右括号
+	ADD, SUB, MUL, DIV, MOD,
+	EOS, NUM // EOS是\0
+};
+string expression = "82/2+56*-"; // 后缀表达式
+
 template <class T>
 class Stack {
 private:
@@ -24,4 +32,10 @@ public:
     T getTop();
 
     void print();
+
+	// 后缀表达式计算
+	contentType getToken(int& index, char& symbol);
+    int calculate();
 };
+
+
