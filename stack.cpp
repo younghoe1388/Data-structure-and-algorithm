@@ -40,15 +40,16 @@ void Stack<T>::push(T data) {
 }
 
 template <class T>
-void Stack<T>::pop() {
+T Stack<T>::pop() {
 	if (this->top == -1) {
 		cout << "Stack is empty, unable to pop elem" << endl;
-		return;
+		return -1;
 	}
 
 	// 直接长度减一，其后压栈时覆盖原数据即可
 	T deleted = this->data[this->top]; // 保存被删除的元素
     this->top--;
+	return deleted;
 }
 
 template <class T>
@@ -156,6 +157,42 @@ int Stack<T>::calculate() {
 	this->pop();
 	cout << "The result is: " << result << endl;
 	return result;
+}
+
+template <class T>
+void Stack<T>::postfix() {
+	// 栈内栈外优先级
+	int in_stack[] = { 0, 19, 12, 12, 13, 13, 13, 0 };
+	int out_stack[] = { 20, 19, 12, 12, 13, 13, 13, 0 };
+
+	contentType token;
+	int index = 0;
+
+	this->push(EOS);
+	char symbol;
+	T e;
+
+	token = getToken(index, symbol);
+	while (token != EOS) {
+		if (token == NUM) {
+			cout << symbol << "";
+		}
+		else if (token == RIGHT_PARE) {
+			while (this->data[this->top] != LEFT_PARE) {
+				T elem = pop();
+                cout << elem << "";
+			}
+			pop();
+		}
+		else {
+			while (in_stack[token] >= out_stack[this->data[this->top]]) {
+                T elem = pop();
+                cout << elem << "";
+            }
+			push(token);
+		}
+		token = getToken(index, symbol);
+	}
 }
 
 int main() {

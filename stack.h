@@ -9,6 +9,7 @@ enum contentType {
 	EOS, NUM // EOS是\0
 };
 string expression = "82/2+56*-"; // 后缀表达式
+string express = "x/(i-j)*y";
 
 template <class T>
 class Stack {
@@ -26,7 +27,7 @@ public:
 	// 压栈操作
 	void push(T x);
 	// 出栈操作
-	void pop();
+	T pop();
 
     // 获取栈顶元素
     T getTop();
@@ -36,6 +37,7 @@ public:
 	// 后缀表达式计算
 	contentType getToken(int& index, char& symbol);
     int calculate();
+	void postfix(); // 中缀转后缀表达式
 };
 
 
