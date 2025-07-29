@@ -1,5 +1,6 @@
 ﻿#include "Heap.h"
 #include <iostream>
+#include <vector>
 using namespace std;
 
 Heap::Heap() {
@@ -88,3 +89,13 @@ void Heap::pop() {
 	}
 }
 
+void Heap::buildHeap(const vector<int>& arr) {
+	delete[] data;
+	data = new int[arr.size()];
+	this->size = arr.size();
+	this->capacity = arr.size();
+
+	for (int i = 0; i < arr.size(); i++) {
+		insert(arr[i]);
+	}
+}

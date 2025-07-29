@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <iostream>
+#include <vector>
 using namespace std;
 
 class Heap {
@@ -11,6 +12,7 @@ public:
 
 	void insert(int value);
 	void pop();
+	void buildHeap(const vector<int>& arr);
 private:
 	static const int MAX_SIZE = 100;
 
