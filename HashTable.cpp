@@ -11,7 +11,16 @@ HashTable<Key, Value>::HashTable(size_t capacity) {
 
 template <class Key, class Value>
 HashTable<Key, Value>::~HashTable() {
-
+	for (size_t i = 0; i < table.size(); i++) {
+		if (table[i] != nullptr) {
+			Node* current = table[i];
+			while (current != nullptr) {
+				Node* temp = current;
+				current = current->next;
+				delete temp;
+			}
+		}
+	}
 }
 
 template <class Key, class Value>
@@ -78,12 +87,33 @@ void HashTable<Key, Value>::remove(Key key) {
 	throw std::runtime_error("Key not found");
 }
 
+template <class Key, class Value>
+void HashTable<Key, Value>::print() {
+	for (size_t i = 0; i < table.size(); i++) {
+		Node* current = table[i];
+		if (table[i] != nullptr) {
+			Node* current = table[i];
+			while (current != nullptr) {
+                cout << "[" << i << "] " << current->key << ": " << current->value << endl;
+                current = current->next;
+			}
+		}
+	}
+}
+
 int main() {
 	system("chcp 65001");
 	HashTable<int, int> table(10);
     table.insert(1, 1);
 	table.insert(2, 2);
+	table.insert(3, 3);
+	table.print();
+	cout << endl;
+
+	table.remove(1);
+	table.print();
 
 	system("pause");
 	return 0;
 }
+

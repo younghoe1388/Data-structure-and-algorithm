@@ -12,7 +12,7 @@ private:
 		Node(Key key, Value value) : key(key), value(value), next(nullptr) {}
 	};
 
-	vector<Node*> table;
+	std::vector<Node*> table;
 	size_t size;
 
 	size_t hashFunc(Key key) const;
@@ -24,5 +24,6 @@ public:
 	void insert(Key key, Value value);
 	Value findKey(Key key);
 	void remove(Key key);
+	void print();
 };
 
