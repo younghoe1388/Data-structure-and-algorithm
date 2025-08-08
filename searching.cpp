@@ -1,4 +1,6 @@
 ﻿#include <iostream>
+#include <vector>
+#include <cmath>
 using namespace std;
 
 // 二分查找，每轮缩小一半查找范围，时间复杂度为log2(n)
@@ -58,6 +60,36 @@ int findRightEdge(int arr[], int size, int target) {
 		return -1;
 	}
 	return result;
+}
+
+// 跳跃搜索
+int jumpSearch(const vector<int>& arr, int target) {
+	int n = arr.size();
+	int step = sqrt(n);
+	int prev = 0;
+
+	while (arr[min(step, n) - 1] < target) {
+		prev = step;
+		step += sqrt(n);
+		if (prev >= n) {
+			return -1;
+		}
+	}
+
+	while (arr[prev] < target) {
+		prev++;
+		// 如果到达下一个块或数组末尾仍未找到
+		if (prev == min(step, n)) {
+			return -1;
+		}
+	}
+
+	// 检查是否找到目标值
+	if (arr[prev] == target) {
+		return prev;
+	}
+
+	return -1;
 }
 
 int main() {
