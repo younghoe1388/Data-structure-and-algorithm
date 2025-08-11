@@ -92,6 +92,29 @@ int jumpSearch(const vector<int>& arr, int target) {
 	return -1;
 }
 
+// 插值搜索（数据均匀分布时使用为佳，否则时间复杂度退化至O(n)）
+// 实际上是二分搜索的改良版，以期望值确定索引
+int interpolationSearch(vector<int>& arr, int target) {
+	int low = 0;
+	int high = arr.size() - 1;
+	while (low <= high && arr[low] <= target && arr[high] >= target) {
+		int pos = low + ((double)(high - low) / (arr[high] - arr[low])) * (target - arr[low]);
+
+		if (arr[pos] == target) {
+			return pos;
+		}
+
+		else if (arr[pos] < target) {
+			low = pos + 1;
+		}
+
+		else {
+			high = pos - 1;
+		}
+	}
+	return -1;
+}
+ 
 int main() {
 	system("chcp 65001");
 	int arr[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -99,6 +122,8 @@ int main() {
     cout << "Binary Search: " << binarySearch(arr, size, 5) << endl;
     cout << "Binary Search Insertion: " << binarySearchInsertion(arr, size, 5) << endl;
 
+	vector<int> ar = { 10, 12, 13, 16, 18, 19, 20, 21, 22, 23, 24, 33, 35, 42, 47 };
+	cout << "Interpolation search: " << interpolationSearch(ar, 24) << endl;
 	system("pause");
 	return 0;
 }
