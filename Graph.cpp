@@ -145,8 +145,44 @@ void GraphAdjMatrix::graphDFS(int startVertex) {
     cout << endl;
 }
 
+vector<int> GraphAdjMatrix::randomWalk(int startNode, int steps, std::mt19937& rng) {
+    vector<int> walk;
+    int current = startNode;
+    int nodesNum = this->getSize();
+
+    walk.reserve(nodesNum + 1); //预留位置
+    walk.push_back(vertices[current]);
+
+    for (int step = 0; step < steps; ++step) {
+        // 获取当前节点的邻居信息
+        const vector<int>& neighboursInfo = adjMatrix[current];
+
+        // 收集当前节点的所有邻居节点索引
+        vector<int> neighbours;
+        for (int i = 0; i < nodesNum; ++i) {
+            if (neighboursInfo[i] > 0) {
+                neighbours.push_back(i);
+            }
+        }
+
+        // 若无邻居，停止游走
+        if (neighbours.empty()) {
+            std::cerr << "Warning, current node " << current << " has no neighbour, walking end" << endl;
+            break;
+        }
+
+        std::uniform_int_distribution<int> dist(0, neighbours.size() - 1);
+        int next_node = neighbours[dist(rng)];
+        current = next_node;
+        walk.push_back(current);
+    }
+    return walk;
+}
+
 int main() {
     system("chcp 65001");
+    std::mt19937 rng(std::chrono::system_clock::now().time_since_epoch().count());
+
     GraphAdjMatrix graph(
         { 1, 2, 3 },
         { {0, 1}, {1, 2}, {2, 0} }  // 去掉 {2, 3} 和 {3, 0}
@@ -158,6 +194,19 @@ int main() {
 
     graph.graphDFS(0);
     graph.graphBFS(0);
+    cout << endl;
+    
+    std::vector<int> path = graph.randomWalk(1, 3, rng);
+
+    // 输出结果
+    cout << "Random walk path: " << endl;
+    for (size_t i = 0; i < path.size(); ++i) {
+        std::cout << path[i];
+        if (i < path.size() - 1) {
+            std::cout << " -> ";
+        }
+    }
+    std::cout << std::endl;
 
     system("pause");
     return 0;

@@ -3,6 +3,8 @@
 #include <vector>
 #include <queue>
 #include <stack>
+#include <random>
+#include <chrono>
 using namespace std;
 
 
@@ -27,6 +29,8 @@ public:
 	void graphBFS(int startVertex); // startVertex是顶点索引
 	// 深度优先搜索DFS（结果不唯一）
 	void graphDFS(int startVertex);
+	// 随机游走算法（Random walk）
+	vector<int> randomWalk(int startNode, int steps, std::mt19937& rng);
 
 	void print();
 };
