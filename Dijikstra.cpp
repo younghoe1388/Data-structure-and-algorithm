@@ -28,14 +28,12 @@ public:
         pq.push({ 0, start });
 
         while (!pq.empty()) {
-            // 处理原点到当下顶点的距离
             int u = pq.top().second;
             int d = pq.top().first;
             pq.pop();
 
-            if (d > dist[u]) continue;
+            if (dist[u] > d) continue;
 
-            // 处理当下点到各个邻接结点的距离
             for (auto& neighbor : adjList[u]) {
                 int v = neighbor.first;
                 int weight = neighbor.second;
@@ -48,8 +46,44 @@ public:
         }
         return dist;
     }
+
     int size() const { return adjList.size(); }
+
+    vector<vector<int>> connectComponent(const vector<vector<int>>& graph) {
+        int n = adjList.size();
+        vector<bool> visited(n, false);
+        vector<vector<int>> components;
+
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                // 新的连通分量
+                vector<int> component;
+                queue<int> q;
+                visited[i] = true;
+                q.push(i);
+
+                // BFS遍历
+                while (!q.empty()) {
+                    int u = q.front();
+                    q.pop();
+                    component.push_back(u);
+
+                    for (auto& neighbor : adjList[u]) {
+                        int v = neighbor.first;  // 提取顶点编号
+                        if (!visited[v]) {
+                            visited[v] = true;
+                            q.push(v);
+                        }
+                    }
+                }
+                components.push_back(component);
+            }
+        }
+        return components;
+    }
 };
+
+
 
 // 使用示例
 int main() {
@@ -66,6 +100,4 @@ int main() {
     for (int i = 0; i < g.size(); ++i) {
         cout << "Distance to " << i << ": " << dist[i] << endl;
     }
-
 }
-
