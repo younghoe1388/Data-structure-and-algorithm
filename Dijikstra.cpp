@@ -28,12 +28,14 @@ public:
         pq.push({ 0, start });
 
         while (!pq.empty()) {
+            // 处理原点到当下顶点的距离
             int u = pq.top().second;
             int d = pq.top().first;
             pq.pop();
 
             if (d > dist[u]) continue;
 
+            // 处理当下点到各个邻接结点的距离
             for (auto& neighbor : adjList[u]) {
                 int v = neighbor.first;
                 int weight = neighbor.second;
@@ -66,3 +68,4 @@ int main() {
     }
 
 }
+
