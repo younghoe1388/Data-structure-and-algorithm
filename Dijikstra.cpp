@@ -32,7 +32,7 @@ public:
             int d = pq.top().first;
             pq.pop();
 
-            if (dist[u] > d) continue;
+            if (d > dist[u]) continue;
 
             for (auto& neighbor : adjList[u]) {
                 int v = neighbor.first;
@@ -100,4 +100,5 @@ int main() {
     for (int i = 0; i < g.size(); ++i) {
         cout << "Distance to " << i << ": " << dist[i] << endl;
     }
+
 }
